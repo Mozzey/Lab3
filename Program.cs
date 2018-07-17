@@ -6,14 +6,15 @@ namespace Lab3
     {
         static void Main(string[] args)
         {
-            // Variables
-            string userName = UserInput.GetUserName();
-            int num = UserInput.GetUserNumber(userName);
-            bool isEven = IsNumEven(userName, num);
-            char runAgain;
             bool isRunning = true;
             while (isRunning)
             {
+                // Variables
+                string userName = UserInput.GetUserName();
+                int num = UserInput.GetUserNumber(userName);
+                bool isEven = IsNumEven(userName, num);
+                char runAgain;
+
                 //Console.Write($"Hello {userName}! Please enter a number between 1 and 100: ");
                 //num = Convert.ToInt32(Console.ReadLine());
 
@@ -45,7 +46,7 @@ namespace Lab3
                 }
 
                 Console.WriteLine("Continute? (y/n)");
-                runAgain = Convert.ToChar(Console.ReadLine().ToLower());
+                runAgain = Convert.ToChar(Console.ReadLine().ToLower().Trim());
                 if (runAgain != 'y')
                 {
                     Console.WriteLine($"Thanks for playing {userName}! Goodbye!");
