@@ -15,14 +15,10 @@ namespace Lab3
                 bool isEven = IsNumEven(userName, num);
                 char runAgain;
 
-                //Console.Write($"Hello {userName}! Please enter a number between 1 and 100: ");
-                //num = Convert.ToInt32(Console.ReadLine());
-
                 // if int is odd and greater than 60  print "num and odd"
                 if (!(isEven) && num > 60)
                 {
                     Console.WriteLine($"{userName}'s Number is {num} and Odd");
-                    //IsNumEven(userName, num);
                 }
                 // if int is even and between 2 to 25 print "even and less than 25"
                 else if (isEven && (num > 1 && num <= 25))
@@ -55,7 +51,7 @@ namespace Lab3
             }
         }
 
-        public static class UserInput
+        private static class UserInput
         {
             public static string GetUserName()
             {
@@ -68,24 +64,27 @@ namespace Lab3
             public static int GetUserNumber(string userName)
             {
                 Console.Write($"Hello {userName}! Please enter a number between 1 and 100: ");
-                int userNumber = Convert.ToInt32(Console.ReadLine());
+                int userNumber = Int32.Parse(Console.ReadLine());
                 return userNumber;
+
             }
         }
 
-        public static bool IsNumEven(string userName, int num)
+        private static bool IsNumEven(string userName, int num)
         {
             if (num % 2 == 0)
             {
-                //Console.WriteLine($"{userName}'s Number is {num} and Odd");
                 return true;
             }
             else
             {
-                //Console.WriteLine($"{userName}'s Number is {num} and Odd");
                 return false;
             }
         }
 
+        private static bool IsValidNumber(string numIn)
+        {
+            return !string.IsNullOrWhiteSpace(numIn) && int.TryParse(numIn, out _);
+        }
     }
 }
