@@ -6,14 +6,15 @@ namespace Lab3
     {
         static void Main(string[] args)
         {
-            bool isRunning = true;
-            while (isRunning)
+            // Boolean value to act as the on/off switch for the program/loop -- dependant on user input
+            bool isRunning;
+
+            do
             {
                 // Variables
                 string userName = UserInput.GetUserName();
-                int num = UserInput.GetUserNumber(userName);
-                bool isEven = IsNumEven(userName, num);
-                char runAgain;
+                int num = Math.Abs(UserInput.GetUserNumber(userName));
+                bool isEven = IsNumEven(num);
 
                 // if int is odd and greater than 60  print "num and odd"
                 if (!(isEven) && num > 60)
@@ -40,17 +41,17 @@ namespace Lab3
                 {
                     Console.WriteLine($"{userName}'s Number is Odd");
                 }
-
-                Console.WriteLine("Continute? (y/n)");
-                runAgain = Convert.ToChar(Console.ReadLine().ToLower().Trim());
-                if (runAgain != 'y')
+                // Ask the user if they would like to play again
+                isRunning = PlayAgain(userName);
+                // If the user decided not to play again give the a warm goodbye!
+                if (!isRunning)
                 {
                     Console.WriteLine($"Thanks for playing {userName}! Goodbye!");
-                    isRunning = false;
                 }
-            }
+            } while (isRunning);
         }
-
+        // Use of a seperate class for the main user input of the program (userName and userNumber)
+        // Number validation is also done here
         private static class UserInput
         {
             public static string GetUserName()
@@ -60,17 +61,28 @@ namespace Lab3
                 string userName = Console.ReadLine();
                 return userName;
             }
-
+            // Ask user to input a number
             public static int GetUserNumber(string userName)
             {
                 Console.Write($"Hello {userName}! Please enter a number between 1 and 100: ");
-                int userNumber = Int32.Parse(Console.ReadLine());
-                return userNumber;
-
+                string userNumber = Console.ReadLine().Trim();
+                // Runs validation method and if true returns the user number
+                if (IsValidNumberAndInRange(userNumber))
+                {
+                    return int.Parse(userNumber);
+                }
+                Console.WriteLine($"Sorry {userName} but you must input a number between 1 and 100...");
+                // if input is not a valid number inform the user and ask for input again
+                return GetUserNumber(userName);
+            }
+            // Seperate method to validate that the input is a number and that the range falls between 1 and 100
+            public static bool IsValidNumberAndInRange(string userNumber)
+            {
+                return int.TryParse(userNumber, out int numOut) && (numOut >= 1 && numOut <= 100);
             }
         }
-
-        private static bool IsNumEven(string userName, int num)
+        // Method to determine wether input is odd or even
+        private static bool IsNumEven(int num)
         {
             if (num % 2 == 0)
             {
@@ -81,10 +93,27 @@ namespace Lab3
                 return false;
             }
         }
-
-        private static bool IsValidNumber(string numIn)
+        // Method to as if the user if they would like to run the program again
+        public static bool PlayAgain(string userName)
         {
-            return !string.IsNullOrWhiteSpace(numIn) && int.TryParse(numIn, out _);
+            Console.WriteLine("Continue? (y/n)");
+            try
+            {
+                char runAgain = Convert.ToChar(Console.ReadLine().ToLower().Trim());
+                if (runAgain == 'y')
+                {
+                    return true;
+                }
+                else if (runAgain == 'n')
+                {
+                    return false;
+                }
+                return PlayAgain(userName);
+            }
+            catch (Exception)
+            {
+                return PlayAgain(userName);
+            }
         }
     }
 }
